@@ -1,0 +1,91 @@
+CREATE PROCEDURE SP_multipleOrderDetails    
+AS      
+SELECT TOP(10) OrderId, OrderName, orderAddress, OrderDate  FROM OrderDetails      
+SELECT TOP(10) EmpId, EmpAddress, EmpCity FROM EmployeeDetail ;      
+GO    
+
+
+
+
+CREATE PROCEDURE  Sp_GetEmployeeDetails      
+    @EmpName nvarchar(50),       
+    @EmpAddress nvarchar(50)       
+AS       
+      
+    SET NOCOUNT ON;      
+    SELECT EmpId, EmpName,EmpAddress,EmpCity     
+    FROM EmployeeDetail      
+    WHERE EmpName = @EmpName AND EmpAddress= @EmpAddress ;      
+GO  
+
+
+
+
+CREATE PROCEDURE sp_OrderDetail2       
+    @OrderName nvarchar(50) = N'A%',       
+    @OrderAddress nvarchar(50) = N'%'      
+AS       
+    SET NOCOUNT ON;      
+    SELECT OrderName, OrderAddress      
+    FROM OrderDetails     
+    WHERE OrderName  LIKE OrderName AND orderAddress LIKE @OrderAddress;   
+
+
+
+CREATE PROCEDURE GetUserDetails     
+      @OrderId varchar(50),       
+     @OrderName varchar(50),       
+     @OrderAddress varchar(50),      
+     @OrderDate datetime      
+AS      
+    SET NOCOUNT ON;      
+    SELECT p.[EmpName] AS Product, p.EmpName AS 'Noida'      
+    FROM EmployeeDetail AS p      
+    JOIN OrderDetails AS s       
+      ON  OrderId  = EmpId      
+    WHERE s.[orderAddress] LIKE @OrderName AND p.EmpName < @OrderName;  
+
+
+
+
+CREATE PROCEDURE dbo.uspCurrencyCursor       
+    @CurrencyCursor CURSOR VARYING OUTPUT      
+AS      
+    SET NOCOUNT ON;      
+    SET @CurrencyCursor = CURSOR      
+    FORWARD_ONLY STATIC FOR      
+      SELECT OrderName, orderAddress      
+      FROM OrderDetails ;      
+    OPEN @CurrencyCursor;      
+GO     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
